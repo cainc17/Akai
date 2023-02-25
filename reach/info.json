@@ -1,0 +1,9 @@
+{
+	"name": "Reacg",
+	"author": [
+		"Akai"
+	],
+	"install_msg": "Thank you for installing Reach cog.",
+	"description": "Shows the reach of roles in a channel.",
+	"short": "Shows the reach of roles in a channel."
+}

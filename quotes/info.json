@@ -1,0 +1,9 @@
+{
+	"name": "Quotes",
+	"author": [
+		"Akai"
+	],
+	"install_msg": "Thank you for installing Quotes cog.",
+	"description": "Shows a random quote and quote of the day.",
+	"short": "Shows a random quote and quote of the day."
+}

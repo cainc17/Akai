@@ -1,0 +1,9 @@
+{
+	"name": "Device",
+	"author": [
+		"Akai"
+	],
+	"install_msg": "Thank you for installing Device cog.",
+	"description": "Shows what device is the user using.",
+	"short": "Shows what device is the user using."
+}
