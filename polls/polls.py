@@ -45,11 +45,12 @@ class Polls(commands.Cog):
 
         return True
 
-    @commands.group(name="poll", invoke_without_subcommand=True)
+    @commands.group(name="poll")
     @checks.has_permissions(manage_guild=True)
     async def poll(self, ctx: commands.Context):
         """Creates a poll with given questions and options."""
-        await ctx.send_help(ctx.command)
+        if ctx.invoked_subcommand is None:
+            await ctx.send_help(ctx.command)
 
     @poll.command(name="create")
     async def poll_create(self, ctx: commands.Context, *, parameters: str):
