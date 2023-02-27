@@ -34,10 +34,15 @@ class Polls(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def poll(self, ctx: commands.Context, parameters: str):
+    async def poll(self, ctx: commands.Context, *, parameters: str):
         """Creates a poll with the given question and options, delimit using '|'."""
 
         _parameters = parameters.split("|")
+        if len(_parameters) < 3:
+            await ctx.send(
+                f"Must enter a question with atleast 2 options.\nExample: `{ctx.clean_prefix}poll How are you? | Good. | Not so good.`"
+            )
+            return
         question = _parameters[0]
         options = _parameters[1:]
 
