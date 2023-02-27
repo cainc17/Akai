@@ -41,6 +41,10 @@ class Polls(commands.Cog):
         question = _parameters[0]
         options = _parameters[1:]
 
+        if len(_parameters) > 10:
+            await ctx.send("A poll cannot have more than 10 options.")
+            return
+
         embed = discord.Embed(title=question, color=0xFFA500)
 
         for i, option in enumerate(options):
