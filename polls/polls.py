@@ -97,7 +97,7 @@ class Polls(commands.Cog):
             await ctx.send("Failed to fetch the message.")
             return
 
-        poll = self.check_is_a_poll(message)
+        poll = self.is_a_poll(message)
         if not poll:
             await ctx.send("That is not a poll message.")
             return
