@@ -51,6 +51,7 @@ class Polls(commands.Cog):
         """Creates a poll with given questions and options."""
         if ctx.invoked_subcommand is None:
             await ctx.send_help(ctx.command)
+            return
 
     @poll.command(name="create")
     async def poll_create(self, ctx: commands.Context, *, parameters: str):
