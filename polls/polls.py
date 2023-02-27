@@ -25,6 +25,20 @@ import discord
 from redbot.core import commands, checks
 
 
+number_emojis = {
+    "1️⃣": 1,
+    "2️⃣": 2,
+    "3️⃣": 3,
+    "4️⃣": 4,
+    "5️⃣": 5,
+    "6️⃣": 6,
+    "7️⃣": 7,
+    "8️⃣": 8,
+    "9️⃣": 9,
+    "🔟": 10,
+}
+
+
 class Polls(commands.Cog):
     """Creates a poll with the given question and options"""
 
@@ -80,7 +94,10 @@ class Polls(commands.Cog):
         poll_message: discord.Message = await ctx.send(embed=embed)
 
         for i in range(len(options)):
-            await poll_message.add_reaction(chr(127462 + i))
+            number_emoji = (
+                f"{i+1}\N{variation selector-16}\N{COMBINING ENCLOSING KEYCAP}"
+            )
+            await poll_message.add_reaction(number_emoji)
 
     @poll.command(name="end")
     async def poll_end(self, ctx: commands.Context, message_id: int):
@@ -102,42 +119,38 @@ class Polls(commands.Cog):
             await ctx.send("That is not a poll message.")
             return
 
-        # Get the list of options from the message embed
         embed = message.embeds[0]
-        options = [field.name.split(". ")[1] for field in embed.fields]
+        options = [field.name for field in embed.fields]
 
-        # Get the reactions from the message
-        reactions = message.reactions
-
-        # Generate a bar chart of the reaction counts
         counts = [0] * len(options)
-        for reaction in reactions:
+        for reaction in message.reactions:
+            emoji_str = str(reaction.emoji)
             try:
-                index = options.index(reaction.emoji.name)
-            except ValueError:
+                index = number_emojis[emoji_str]
+            except KeyError:
                 continue
-            counts[index] = (
-                reaction.count - 1
-            )  # subtract 1 to exclude the bot's reaction
+
+            counts[index - 1] = reaction.count - 1
 
         max_count = max(counts)
         if max_count == 0:
-            bar_chart = "No votes yet"
+            for i, option in enumerate(options):
+                field_name = option
+                embed.set_field_at(
+                    i, name=field_name, value="No votes yet!", inline=False
+                )
         else:
-            bar_chart = ""
             for i, option in enumerate(options):
                 count = counts[i]
                 bar_length = round(count / max_count * 10)
-                bar_chart += (
-                    f"{option}: {'█' * bar_length}{'-' * (10 - bar_length)} ({count})\n"
-                )
-
-        # Update the poll message embed description with the bar chart
-        embed.description = bar_chart
+                field_name = option
+                field_value = f"{'█' * bar_length}{'-' * (10 - bar_length)} ({count})"
+                embed.set_field_at(i, name=field_name, value=field_value, inline=False)
 
         # Edit the poll message to indicate that it has ended
         embed.title += " (Ended)"
         embed.color = discord.Color.dark_grey()
+        embed.set_footer(text="")
         await message.edit(embed=embed)
 
         await ctx.send(f"Poll with ID {message_id} has ended.")
