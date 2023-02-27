@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from .quotes import Quotes
+from .polls import Polls
 
 
 def setup(bot):
-    bot.add_cog(Quotes(bot))
+    bot.add_cog(Polls(bot))
