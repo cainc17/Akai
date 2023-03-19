@@ -1,9 +1,0 @@
-{
-	"name": "Polls",
-	"author": [
-		"Akai"
-	],
-	"install_msg": "Thank you for installing Polls cog.",
-	"description": "Commands for creating basic quick polls.",
-	"short": "Commands for creating basic quick polls."
-}
