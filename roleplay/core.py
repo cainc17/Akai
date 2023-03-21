@@ -1,7 +1,7 @@
 """
 MIT License
 
-Copyright (c) 2023-present Akai
+Copyright (c) 2022-present ltzmax
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,42 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from .quotes import Quotes
-
-
-def setup(bot):
-    bot.add_cog(Quotes(bot))
+NEKOS = "https://nekos.best/api/v2/"
+ACTIONS = {
+    "baka": "baka",
+    "cry": "cries at",
+    "cuddle": "cuddles",
+    "dance": "dances with",
+    "feed": "feeds",
+    "hug": "hugs",
+    "kiss": "kisses",
+    "laugh": "laughs at",
+    "pat": "pats",
+    "poke": "pokes",
+    "slap": "slaps",
+    "smile": "smiles at",
+    "smug": "smugs",
+    "tickle": "tickles",
+    "wave": "waves at",
+    "bite": "bites",
+    "blush": "blushes",
+    "bored": "is bored with",
+    "facepalm": "facepalm",
+    "happy": "is happy with",
+    "highfive": "highfives",
+    "pout": "pouts",
+    "shrug": "shrugs",
+    "sleep": "sleeps with",
+    "stare": "stares at",
+    "think": "thinks at",
+    "thumbsup": "thumbsup",
+    "wink": "winks",
+    "handhold": "holds the hands of",
+    "kick": "kicks",
+    "punch": "punches",
+    "shoot": "shoots",
+    "yeet": "yeets",
+    "nod": "nods",
+    "nope": "nope",
+    "nom": "nom nom",
+}
