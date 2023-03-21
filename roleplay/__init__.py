@@ -8,5 +8,5 @@ __red_end_user_data_statement__ = (
 def setup(bot):
     command = bot.get_command("hug")
     if command:
-        bot.remove_command(command)
+        bot.remove_command("hug")
     bot.add_cog(RolePlay(bot))
