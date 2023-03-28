@@ -219,7 +219,7 @@ class RandomColor(commands.Cog):
             f"<@&{settings['log_channel']}>" if settings["log_channel"] else "None"
         )
         next_run = (
-            f"<t:{self.sleep_time.timestamp()}:R>"
+            f"<t:{int(self.sleep_time.timestamp())}:R>"
             if self.sleep_time.timestamp()
             else "None"
         )
@@ -227,7 +227,7 @@ class RandomColor(commands.Cog):
         description = (
             f"Role: {role}\n"
             f"Channel: {channel}\n"
-            f"Toggle: {'Enabled' if settings['toggle'] else 'Disabled'}"
+            f"Toggle: {'Enabled' if settings['toggle'] else 'Disabled'}\n"
             f"Next Run: {next_run}"
         )
 
