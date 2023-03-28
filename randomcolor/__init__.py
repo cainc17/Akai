@@ -25,5 +25,5 @@ SOFTWARE.
 from .randomcolor import RandomColor
 
 
-async def setup(bot):
-    await bot.add_cog(RandomColor(bot))
+def setup(bot):
+    bot.add_cog(RandomColor(bot))
