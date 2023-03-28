@@ -225,12 +225,28 @@ class RandomColor(commands.Cog):
     @randomcolour.command(name="settings")
     async def randomcolour_settings(self, ctx: commands.Context) -> None:
         """Shows the randomcolour settings!"""
-        role = await self.config.guild(ctx.guild).role_id()
-        if not role:
-            await ctx.send(
-                f"Set the random colour role first using `{ctx.clean_prefix}randomcolour role`."
-            )
-            return
+        settings = await self.config.guild(ctx.guild).all()
 
-        await self.config.guild(ctx.guild).toggle.set(True)
-        await ctx.tick()
+        role = f"<@&{settings['role_id']}>" if settings["role_id"] else "None"
+        channel = (
+            f"<@&{settings['log_channel']}>" if settings["log_channel"] else "None"
+        )
+        next_run = (
+            f"<t:{self.sleep_time.timestamp()}:R>"
+            if self.sleep_time.timestamp()
+            else "None"
+        )
+
+        description = (
+            f"Role: {role}\n"
+            f"Channel: {channel}\n"
+            f"Toggle: {'Enabled' if settings['toggle'] else 'Disabled'}"
+            f"Next Run: {next_run}"
+        )
+
+        embed = discord.Embed(
+            title=f"Settings for {ctx.guild.name}!",
+            description=description,
+            color=discord.Colour.random(),
+        )
+        await ctx.send(embed=embed)
