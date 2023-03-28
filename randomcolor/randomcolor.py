@@ -158,7 +158,7 @@ class RandomColor(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @randomcolour.command(name="logchannel")
+    @randomcolour.command(name="logchannel", aliases=["channel"])
     async def randomcolour_logchannel(
         self, ctx: commands.Context, channel: discord.TextChannel
     ) -> None:
@@ -193,6 +193,38 @@ class RandomColor(commands.Cog):
     @randomcolour.command(name="toggle")
     async def randomcolour_toggle(self, ctx: commands.Context) -> None:
         """Toggle the random colour loop."""
+        role = await self.config.guild(ctx.guild).role_id()
+        if not role:
+            await ctx.send(
+                f"Set the random colour role first using `{ctx.clean_prefix}randomcolour role <role>`."
+            )
+            return
+
+        await self.config.guild(ctx.guild).toggle.set(True)
+        await ctx.tick()
+
+    @randomcolour.command(name="toggle")
+    async def randomcolour_toggle(self, ctx: commands.Context) -> None:
+        """Toggle the random colour loop."""
+        role = await self.config.guild(ctx.guild).role_id()
+        if not role:
+            await ctx.send(
+                f"Set the random colour role first using `{ctx.clean_prefix}randomcolour role`."
+            )
+            return
+
+        toggle = await self.config.guild(ctx.guild).toggle()
+        if toggle:
+            await self.config.guild(ctx.guild).toggle.set(False)
+            action = "enabled"
+        else:
+            await self.config.guild(ctx.guild).toggle.set(True)
+            action = "disabled"
+        await ctx.send(f"Successfully {action} the randomcolor cog!")
+
+    @randomcolour.command(name="settings")
+    async def randomcolour_settings(self, ctx: commands.Context) -> None:
+        """Shows the randomcolour settings!"""
         role = await self.config.guild(ctx.guild).role_id()
         if not role:
             await ctx.send(
