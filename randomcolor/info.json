@@ -1,0 +1,9 @@
+{
+	"name": "Karuta",
+	"author": [
+		"Akai"
+	],
+	"install_msg": "Thank you for installing RandomColour cog.",
+	"description": "Automatically change a role colour daily.",
+	"short": "Automatically change a role colour daily."
+}
