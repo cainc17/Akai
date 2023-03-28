@@ -196,19 +196,6 @@ class RandomColor(commands.Cog):
         role = await self.config.guild(ctx.guild).role_id()
         if not role:
             await ctx.send(
-                f"Set the random colour role first using `{ctx.clean_prefix}randomcolour role <role>`."
-            )
-            return
-
-        await self.config.guild(ctx.guild).toggle.set(True)
-        await ctx.tick()
-
-    @randomcolour.command(name="toggle")
-    async def randomcolour_toggle(self, ctx: commands.Context) -> None:
-        """Toggle the random colour loop."""
-        role = await self.config.guild(ctx.guild).role_id()
-        if not role:
-            await ctx.send(
                 f"Set the random colour role first using `{ctx.clean_prefix}randomcolour role`."
             )
             return
