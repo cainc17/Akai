@@ -215,9 +215,7 @@ class RandomColor(commands.Cog):
         settings = await self.config.guild(ctx.guild).all()
 
         role = f"<@&{settings['role_id']}>" if settings["role_id"] else "None"
-        channel = (
-            f"<@&{settings['log_channel']}>" if settings["log_channel"] else "None"
-        )
+        channel = f"<#{settings['log_channel']}>" if settings["log_channel"] else "None"
         next_run = (
             f"<t:{int(self.sleep_time.timestamp())}:R>"
             if self.sleep_time.timestamp()
