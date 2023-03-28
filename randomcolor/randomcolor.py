@@ -186,6 +186,7 @@ class RandomColor(commands.Cog):
 
     @randomcolour.command(name="changecolour", aliases=["changecolor"])
     async def randomcolour_changecolour(self, ctx: commands.Context) -> None:
+        """Force change the color of random color role."""
         await self.change_role_colour(ctx.guild)
         await ctx.tick()
 
