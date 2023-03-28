@@ -73,7 +73,7 @@ class RandomColor(commands.Cog):
         self, guild: discord.Guild, role: Optional[discord.Role] = None
     ) -> None:
         if not role:
-            role = guild.get_role(await self.config(guild).role_id())
+            role = guild.get_role(await self.config.guild(guild).role_id())
 
         color = discord.Colour.random()
         await role.edit(color=color, reason="Random Colour!")
