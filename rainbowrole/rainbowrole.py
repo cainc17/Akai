@@ -102,6 +102,10 @@ class RainbowRole(commands.Cog):
 
             await self.change_role_colour(guild, role)
 
+        next_run = datetime.datetime.now() + datetime.timedelta(hours=12)
+
+        self.sleep_time = next_run
+
     @color_change_task.before_loop
     async def wait_until_time(self):
 
