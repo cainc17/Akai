@@ -85,7 +85,7 @@ class RainbowRole(commands.Cog):
     @tasks.loop(hours=12)
     async def color_change_task(self) -> None:
         data = await self.config.all_guilds()
-        for guild_id, guild_data in data:
+        for guild_id, guild_data in data.items():
             guild = self.bot.get_guild(guild_id)
             if not guild:
                 continue
