@@ -1,9 +1,9 @@
 {
-	"name": "Karuta",
+	"name": "RainbowRole",
 	"author": [
 		"Akai"
 	],
-	"install_msg": "Thank you for installing RandomColour cog.",
+	"install_msg": "Thank you for installing RainbowRole cog.",
 	"description": "Automatically change a role colour daily.",
 	"short": "Automatically change a role colour daily."
 }

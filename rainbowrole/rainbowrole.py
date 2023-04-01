@@ -27,10 +27,9 @@ import discord
 from redbot.core import commands, Config
 from discord.ext import tasks
 import datetime
-import re
 
 
-class RandomColor(commands.Cog):
+class RainbowRole(commands.Cog):
     """Automatically change role colour to a random hex daily."""
 
     __version__ = "1.0.0"
@@ -106,7 +105,7 @@ class RandomColor(commands.Cog):
     @color_change_task.before_loop
     async def wait_until_time(self):
 
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(datetime.timezone.utc)
 
         task = self.color_change_task
         interval = datetime.timedelta(
@@ -124,18 +123,18 @@ class RandomColor(commands.Cog):
         await discord.utils.sleep_until(next_run)
 
     @commands.group(
-        name="randomcolour", aliases=["randomcolor"], invoke_without_command=True
+        name="rainbowrole",
+        aliases=["randomcolour", "randomcolor"],
+        invoke_without_command=True,
     )
     @commands.has_permissions(manage_guild=True)
-    async def randomcolour(self, ctx: commands.Context) -> None:
+    async def rainbowrole(self, ctx: commands.Context) -> None:
         """Change the hex of a role daily to a random colour."""
         if ctx.invoked_subcommand is None:
             await ctx.send_help(ctx.command)
 
-    @randomcolour.command(name="role")
-    async def randomcolour_role(
-        self, ctx: commands.Context, role: discord.Role
-    ) -> None:
+    @rainbowrole.command(name="role")
+    async def rainbowrole_role(self, ctx: commands.Context, role: discord.Role) -> None:
         """Set the random colour role."""
         if role.position >= ctx.guild.me.top_role.position:
             return await ctx.send(
@@ -158,8 +157,8 @@ class RandomColor(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @randomcolour.command(name="logchannel", aliases=["channel"])
-    async def randomcolour_logchannel(
+    @rainbowrole.command(name="logchannel", aliases=["channel"])
+    async def rainbowrole_logchannel(
         self, ctx: commands.Context, channel: discord.TextChannel
     ) -> None:
         """Set the random colour logchannel."""
@@ -184,19 +183,19 @@ class RandomColor(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @randomcolour.command(name="changecolour", aliases=["changecolor"])
-    async def randomcolour_changecolour(self, ctx: commands.Context) -> None:
+    @rainbowrole.command(name="changecolour", aliases=["changecolor"])
+    async def rainbowrole_changecolour(self, ctx: commands.Context) -> None:
         """Force change the color of random color role."""
         await self.change_role_colour(ctx.guild)
         await ctx.tick()
 
-    @randomcolour.command(name="toggle")
-    async def randomcolour_toggle(self, ctx: commands.Context) -> None:
+    @rainbowrole.command(name="toggle")
+    async def rainbowrole_toggle(self, ctx: commands.Context) -> None:
         """Toggle the random colour loop."""
         role = await self.config.guild(ctx.guild).role_id()
         if not role:
             await ctx.send(
-                f"Set the random colour role first using `{ctx.clean_prefix}randomcolour role`."
+                f"Set the random colour role first using `{ctx.clean_prefix}rainbowrole role`."
             )
             return
 
@@ -207,11 +206,11 @@ class RandomColor(commands.Cog):
         else:
             await self.config.guild(ctx.guild).toggle.set(True)
             action = "disabled"
-        await ctx.send(f"Successfully {action} the randomcolor cog!")
+        await ctx.send(f"Successfully {action} the RainbowRole cog!")
 
-    @randomcolour.command(name="settings")
-    async def randomcolour_settings(self, ctx: commands.Context) -> None:
-        """Shows the randomcolour settings!"""
+    @rainbowrole.command(name="settings")
+    async def rainbowrole_settings(self, ctx: commands.Context) -> None:
+        """Shows the rainbowrole settings!"""
         settings = await self.config.guild(ctx.guild).all()
 
         role = f"<@&{settings['role_id']}>" if settings["role_id"] else "None"

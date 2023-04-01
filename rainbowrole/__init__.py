@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from .randomcolor import RandomColor
+from .rainbowrole import RainbowRole
 
 
 def setup(bot):
-    bot.add_cog(RandomColor(bot))
+    bot.add_cog(RainbowRole(bot))
