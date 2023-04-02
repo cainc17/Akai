@@ -87,8 +87,8 @@ class AwayFromKeyboard(commands.Cog):
     @commands.Cog.listener("on_message_without_command")
     async def afk_listener(self, message: discord.Message) -> None:
         if (
-            not message.guild,
-            (await self.bot.cog_disabled_in_guild(self, message.guild)),
+            not message.guild
+            or (await self.bot.cog_disabled_in_guild(self, message.guild)),
         ):
             return
 
