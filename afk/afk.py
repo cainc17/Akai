@@ -82,22 +82,24 @@ class AwayFromKeyboard(commands.Cog):
             description=description,
             color=0x2B2D31,
         )
-        await channel.send(embed=embed)
+        try:
+
+            await channel.send(embed=embed)
+        except discord.Forbidden:
+            pass
 
     @commands.Cog.listener("on_message_without_command")
     async def afk_listener(self, message: discord.Message) -> None:
-        if (
-            not message.guild
-            or await self.bot.cog_disabled_in_guild(self, message.guild),
-        ):
+        if not message.guild:
+            return
+
+        cog_disabled = await self.bot.cog_disabled_in_guild(self, message.guild)
+        if cog_disabled:
             return
 
         member_data = await self.config.member(message.author).all()
         if member_data["afk"]:
             await self.remove_afk(message.channel, message.author)
-
-        if not message.mentions:
-            return
 
         for member in message.mentions:
             member_data = await self.config.member(member).all()
