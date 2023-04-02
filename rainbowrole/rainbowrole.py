@@ -206,10 +206,10 @@ class RainbowRole(commands.Cog):
         toggle = await self.config.guild(ctx.guild).toggle()
         if toggle:
             await self.config.guild(ctx.guild).toggle.set(False)
-            action = "enabled"
+            action = "disabled"
         else:
             await self.config.guild(ctx.guild).toggle.set(True)
-            action = "disabled"
+            action = "enabled"
         await ctx.send(f"Successfully {action} the RainbowRole cog!")
 
     @rainbowrole.command(name="settings")

@@ -75,7 +75,7 @@ class AwayFromKeyboard(commands.Cog):
         description = f"While you were AFK, you got **{len(mentions)}** ping(s):"
 
         for mention in mentions:
-            description += f"・{mention['author']}・<t:{mention['timestamp']}:R>・[Jump]({mention('url')})"
+            description += f"・{mention['author']}・<t:{mention['timestamp']}:R>・[Jump]({mention['url']})"
 
         embed = discord.Embed(
             title=f"Welcome back, {member.name}",
