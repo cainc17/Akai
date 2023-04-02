@@ -68,7 +68,7 @@ class AwayFromKeyboard(commands.Cog):
     async def remove_afk(
         self, channel: discord.TextChannel, member: discord.Member
     ) -> None:
-        mentions = await self.config.member(member).mentions()[:10]
+        mentions = (await self.config.member(member).mentions())[:10]
         await self.config.member(member).clear()
         await self.remove_afk_from_nickname(member)
 
