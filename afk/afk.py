@@ -121,7 +121,7 @@ class AwayFromKeyboard(commands.Cog):
     @commands.command(aliases=["away", "touchgrass"])
     @commands.cooldown(1, 5.0, commands.BucketType.member)
     @commands.has_permissions(embed_links=True)
-    async def afk(self, ctx: commands.Context, message: Optional[str] = None):
+    async def afk(self, ctx: commands.Context, *, message: Optional[str] = None):
         """Make the bot send a message whenever you are away from the keyboard."""
         data = await self.config.member(ctx.author).all()
         if data and data["afk"]:
