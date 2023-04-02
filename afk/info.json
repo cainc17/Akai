@@ -1,0 +1,9 @@
+{
+	"name": "AwayFromKeyboard",
+	"author": [
+		"Akai"
+	],
+	"install_msg": "Thank you for installing AFK cog. Use `[p]help AwayFromKeyboard` to know more about the cog.",
+	"description": "Make the bot send a message whenever you are away from the keyboard.",
+	"short": "Make the bot send a message whenever you are away from the keyboard."
+}

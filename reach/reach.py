@@ -85,7 +85,7 @@ class Reach(commands.Cog):
         description += f"\nTotal reach: {len(members)} out of {len(total_members)} targeted members\nwhich represents {percent:.2f}%"
 
         embed = discord.Embed(
-            title="**Roles Reach**", description=description, color=3092790
+            title="**Roles Reach**", description=description, color=0x2B2D31
         )
         embed.set_footer(text="Run ';invite' to invite me!")
 
