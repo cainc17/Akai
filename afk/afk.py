@@ -135,7 +135,7 @@ class AwayFromKeyboard(commands.Cog):
             await self.config.member(ctx.author).set(user_data)
 
             embed = discord.Embed(
-                description=f"\✅ I set your AFK: {message or 'No Message'}",
+                description=f"✅ I set your AFK: {message or 'No Message'}",
                 color=0x2B2D31,
             )
 
