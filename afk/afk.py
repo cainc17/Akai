@@ -78,7 +78,7 @@ class AwayFromKeyboard(commands.Cog):
             description += f"・{mention['author']}・<t:{mention['timestamp']}:R>・[Jump]({mention('url')})"
 
         embed = discord.Embed(
-            f"Welcome back, {member.name}",
+            title=f"Welcome back, {member.name}",
             description=description,
             color=0x2B2D31,
         )
