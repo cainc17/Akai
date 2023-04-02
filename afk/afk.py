@@ -105,7 +105,7 @@ class AwayFromKeyboard(commands.Cog):
             member_data = await self.config.member(member).all()
             if member_data and member_data["afk"]:
                 await message.channel.send(
-                    f"{member.name} is AFK: {member_data['message']} (since <t:{member_data['afk_since']}:R>)",
+                    f"{member.name} is AFK: {member_data['message'] or 'No Message'} (since <t:{member_data['afk_since']}:R>)",
                     delete_after=5,
                 )
                 config = self.config.member(member)
@@ -114,7 +114,7 @@ class AwayFromKeyboard(commands.Cog):
                     new_mention = {
                         "author": message.author.name,
                         "timestamp": int(time.time()),
-                        "url": {message.jump_url},
+                        "url": message.jump_url,
                     }
                     mentions.append(new_mention)
 
