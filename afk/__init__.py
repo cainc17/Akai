@@ -25,5 +25,5 @@ SOFTWARE.
 from .afk import AwayFromKeyboard
 
 
-def setup(bot):
-    bot.add_cog(AwayFromKeyboard(bot))
+async def setup(bot):
+    await bot.add_cog(AwayFromKeyboard(bot))
