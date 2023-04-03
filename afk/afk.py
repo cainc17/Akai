@@ -185,7 +185,7 @@ class AwayFromKeyboard(commands.Cog):
         if channel.id in channel_ids:
             await ctx.message.add_reaction("❎")
         else:
-            config = self.guild(ctx.guild)
+            config = self.config.guild(ctx.guild)
             async with config.blacklisted_channels() as blacklisted_channels:
                 blacklisted_channels.append(channel.id)
             await ctx.message.add_reaction("✅")
@@ -199,7 +199,7 @@ class AwayFromKeyboard(commands.Cog):
         if not channel.id in channel_ids:
             await ctx.message.add_reaction("❎")
         else:
-            config = self.guild(ctx.guild)
+            config = self.config.guild(ctx.guild)
             async with config.blacklisted_channels() as blacklisted_channels:
                 blacklisted_channels.remove(channel.id)
             await ctx.message.add_reaction("✅")
