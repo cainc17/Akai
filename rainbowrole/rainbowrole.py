@@ -89,7 +89,7 @@ class RainbowRole(commands.Cog):
             guild = self.bot.get_guild(guild_id)
             if not guild:
                 continue
-            if not guild["toggle"]:
+            if not guild_data["toggle"]:
                 return
 
             role = guild.get_role(guild_data["role_id"])
