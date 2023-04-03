@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+import asyncio
 import time
 from typing import Optional
 import discord
@@ -36,6 +37,8 @@ class AwayFromKeyboard(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+        self.grace_period = []
+
         self.config = Config.get_conf(self, identifier=4654651557)
 
         default_member = {
@@ -46,6 +49,12 @@ class AwayFromKeyboard(commands.Cog):
         }
 
         self.config.register_member(**default_member)
+
+        default_guild = {
+            "blacklisted_channels": [],
+        }
+
+        self.config.register_guild(**default_guild)
 
     async def add_afk_to_nickname(self, member: discord.Member) -> None:
         name = member.display_name
@@ -97,9 +106,15 @@ class AwayFromKeyboard(commands.Cog):
         if cog_disabled:
             return
 
+        if message.channel.id in (
+            await self.config.guild(message.guild).blacklisted_channels()
+        ):
+            return
+
         member_data = await self.config.member(message.author).all()
         if member_data["afk"]:
-            await self.remove_afk(message.channel, message.author)
+            if not message.author.id in self.grace_period:
+                await self.remove_afk(message.channel, message.author)
 
         for member in message.mentions:
             member_data = await self.config.member(member).all()
@@ -108,19 +123,20 @@ class AwayFromKeyboard(commands.Cog):
                     f"{member.name} is AFK: {member_data['message'] or 'No Message'} (since <t:{member_data['afk_since']}:R>)",
                     delete_after=5,
                 )
-                config = self.config.member(member)
+                if message.channel.permissions_for(member).read_messages == True:
+                    config = self.config.member(member)
 
-                async with config.mentions() as mentions:
-                    new_mention = {
-                        "author": message.author.name,
-                        "timestamp": int(time.time()),
-                        "url": message.jump_url,
-                    }
-                    mentions.append(new_mention)
+                    async with config.mentions() as mentions:
+                        new_mention = {
+                            "author": message.author.name,
+                            "timestamp": int(time.time()),
+                            "url": message.jump_url,
+                        }
+                        mentions.append(new_mention)
 
+    @commands.guild_only()
     @commands.command(aliases=["away", "touchgrass"])
     @commands.cooldown(1, 5.0, commands.BucketType.member)
-    @commands.has_permissions(embed_links=True)
     async def afk(self, ctx: commands.Context, *, message: Optional[str] = None):
         """Make the bot send a message whenever you are away from the keyboard."""
 
@@ -144,3 +160,59 @@ class AwayFromKeyboard(commands.Cog):
             await self.add_afk_to_nickname(ctx.author)
 
             await ctx.send(embed=embed)
+
+            # Cooldown feature added.
+            self.grace_period.append(ctx.author.id)
+            await asyncio.sleep(5)
+            self.grace_period.remove(ctx.author.id)
+
+    @commands.guild_only()  # type:ignore
+    @commands.group(aliases=["awayset"])
+    @commands.has_permissions(manage_guild=True)
+    async def afkset(self, ctx: commands.Context) -> None:
+        """Set and manage afk command."""
+
+    @afkset.group(name="blacklist", aliases=["bl"])
+    async def afkset_blacklist(self, ctx: commands.Context) -> None:
+        """Set the blacklist channel to ignore AFK."""
+
+    @afkset_blacklist.command(name="add", aliases=["a", "+"])
+    async def afkset_blacklist_add(
+        self, ctx: commands.Context, channel: discord.TextChannel
+    ) -> None:
+        """Add a blacklist channel to ignore AFK."""
+        channel_ids = await self.config.guild(ctx.guild).blacklisted_channels()
+        if channel.id in channel_ids:
+            await ctx.message.add_reaction("❎")
+        else:
+            config = self.guild(ctx.guild)
+            async with config.blacklisted_channels() as blacklisted_channels:
+                blacklisted_channels.append(channel.id)
+            await ctx.message.add_reaction("✅")
+
+    @afkset_blacklist.command(name="remove", aliases=["r", "-"])
+    async def afkset_blacklist_remove(
+        self, ctx: commands.Context, channel: discord.TextChannel
+    ) -> None:
+        """Remove a blacklist channel from ignoring AFK."""
+        channel_ids = await self.config.guild(ctx.guild).blacklisted_channels()
+        if not channel.id in channel_ids:
+            await ctx.message.add_reaction("❎")
+        else:
+            config = self.guild(ctx.guild)
+            async with config.blacklisted_channels() as blacklisted_channels:
+                blacklisted_channels.remove(channel.id)
+            await ctx.message.add_reaction("✅")
+
+    @afkset_blacklist.command(name="list")
+    async def afkset_blacklist_list(self, ctx: commands.Context) -> None:
+        """Get the list of channels where AFK is ignored."""
+        channel_ids = await self.config.guild(ctx.guild).blacklisted_channels()
+        description = ""
+        for i, channel_id in enumerate(channel_ids):
+            description += f"{i+1}. <#{channel_id}>."
+
+        embed = discord.Embed(
+            title="Blacklisted Channels", description=description, color=0x2B2D31
+        )
+        await ctx.send(embed=embed)
