@@ -68,7 +68,7 @@ class AwayFromKeyboard(commands.Cog):
         if "[AFK]" in member.display_name:
             try:
                 await member.edit(
-                    nick=None,
+                    nick=member.display_name.replace("[AFK]", ""),
                     reason="User removed AFK status.",
                 )
             except discord.HTTPException:
