@@ -68,7 +68,7 @@ class AwayFromKeyboard(commands.Cog):
         if "[AFK]" in member.display_name:
             try:
                 await member.edit(
-                    nick=None,
+                    nick=member.display_name.replace("[AFK]", ""),
                     reason="User removed AFK status.",
                 )
             except discord.HTTPException:
@@ -92,7 +92,6 @@ class AwayFromKeyboard(commands.Cog):
             color=0x2B2D31,
         )
         try:
-
             await channel.send(embed=embed)
         except discord.Forbidden:
             pass
