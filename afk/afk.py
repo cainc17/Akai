@@ -82,22 +82,26 @@ class AwayFromKeyboard(commands.Cog):
         chunks = discord.utils.as_chunks(mentions, 15)
         await self.config.member(member).clear()
         await self.remove_afk_from_nickname(member)
-
+        embeds = []
         description = f"While you were AFK, you got **{len(mentions)}** ping(s):"
         for i, mentions in enumerate(chunks):
             for mention in mentions:
                 description += f"\n・{mention['author']}・<t:{mention['timestamp']}:R>・[Jump]({mention['url']})"
             embed = discord.Embed(
-                title=f"Welcome back, {member.name}" if i == 1 else "",
+                title=f"Welcome back, {member.name}" if i == 0 else "",
                 description=description,
                 color=0x2B2D31,
             )
-            try:
-                await channel.send(embed=embed)
-            except discord.Forbidden:
-                pass
 
             description = ""  # clearing description before next chunk
+            embeds.append(embed)
+
+        try:
+            await channel.send(
+                embeds=embeds[:10]  # we cannot send more than 10 embeds.
+            )
+        except discord.Forbidden:
+            pass
 
     @commands.Cog.listener("on_message_without_command")
     async def afk_listener(self, message: discord.Message) -> None:
