@@ -25,5 +25,5 @@ SOFTWARE.
 from .reach import Reach
 
 
-def setup(bot):
-    bot.add_cog(Reach(bot))
+async def setup(bot):
+    await bot.add_cog(Reach(bot))
