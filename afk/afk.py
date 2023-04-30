@@ -25,8 +25,9 @@ SOFTWARE.
 import asyncio
 import time
 from typing import Optional
+
 import discord
-from redbot.core import commands, Config
+from redbot.core import Config, commands
 
 
 class AwayFromKeyboard(commands.Cog):
@@ -77,24 +78,26 @@ class AwayFromKeyboard(commands.Cog):
     async def remove_afk(
         self, channel: discord.TextChannel, member: discord.Member
     ) -> None:
-        mentions = (await self.config.member(member).mentions())[:10]
+        mentions = await self.config.member(member).mentions()
+        chunks = discord.utils.as_chunks(mentions, 15)
         await self.config.member(member).clear()
         await self.remove_afk_from_nickname(member)
 
         description = f"While you were AFK, you got **{len(mentions)}** ping(s):"
+        for i, mentions in enumerate(chunks):
+            for mention in mentions:
+                description += f"\n・{mention['author']}・<t:{mention['timestamp']}:R>・[Jump]({mention['url']})"
+            embed = discord.Embed(
+                title=f"Welcome back, {member.name}" if i == 1 else "",
+                description=description,
+                color=0x2B2D31,
+            )
+            try:
+                await channel.send(embed=embed)
+            except discord.Forbidden:
+                pass
 
-        for mention in mentions:
-            description += f"\n・{mention['author']}・<t:{mention['timestamp']}:R>・[Jump]({mention['url']})"
-
-        embed = discord.Embed(
-            title=f"Welcome back, {member.name}",
-            description=description,
-            color=0x2B2D31,
-        )
-        try:
-            await channel.send(embed=embed)
-        except discord.Forbidden:
-            pass
+            description = ""  # clearing description before next chunk
 
     @commands.Cog.listener("on_message_without_command")
     async def afk_listener(self, message: discord.Message) -> None:
