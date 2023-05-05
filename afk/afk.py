@@ -98,11 +98,13 @@ class AwayFromKeyboard(commands.Cog):
 
         try:
             if not embeds:
-                embeds = [discord.Embed(
-                title=f"Welcome back, {member.name}",
-                description=f"While you were AFK, you got **{len(mentions)}** pings.",
-                color=0x2B2D31,
-            )]
+                embeds = [
+                    discord.Embed(
+                        title=f"Welcome back, {member.name}",
+                        description=f"While you were AFK, you got **{len(mentions)}** pings.",
+                        color=0x2B2D31,
+                    )
+                ]
             await channel.send(
                 embeds=embeds[:10]  # we cannot send more than 10 embeds.
             )
