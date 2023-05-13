@@ -87,7 +87,7 @@ class Reach(commands.Cog):
         embed = discord.Embed(
             title="**Roles Reach**", description=description, color=0x2B2D31
         )
-        embed.set_footer(text="Run ';invite' to invite me!")
+       
 
         await ctx.send(embed=embed)
 
